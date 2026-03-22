@@ -1,0 +1,12 @@
+venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+data/processed/
+.chroma/
+*.db
+.DS_Store
+.streamlit/secrets.toml
+notebooks/.ipynb_checkpoints/
+data/raw/
