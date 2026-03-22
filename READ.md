@@ -11,7 +11,9 @@
 
 **A production-ready RAG chatbot with voice input, text-to-speech, and semantic search**
 
-[🚀 Live Demo](#) • [📖 How It Works](#how-it-works) • [⚙️ Setup](#setup) • [🏗️ Architecture](#architecture)
+[![🚀 Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Click_Here-brightgreen?style=for-the-badge)](https://rag-chatbot-tts.streamlit.app/)
+
+[📖 How It Works](#how-it-works) • [⚙️ Setup](#setup) • [🏗️ Architecture](#architecture) • [🧪 Tests](#run-tests)
 
 </div>
 
@@ -32,7 +34,23 @@
 
 ---
 
-## 🏗️ Architecture
+## How It Works
+```
+1. INGEST                2. EMBED                3. RETRIEVE
+─────────────           ─────────────           ─────────────
+PDF or URL    →    Split into chunks  →   Store in ChromaDB
+                   Embed with           Vector similarity
+                   MiniLM-L6-v2         search (top-5)
+
+4. GENERATE              5. RESPOND
+─────────────           ─────────────
+Build prompt   →    LLaMA 3.1 via     →   Answer + Sources
+with context        Groq API               + TTS audio
+```
+
+---
+
+## Architecture
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        USER INTERFACE                        │
@@ -55,22 +73,6 @@
 │ Vector Store    │           │     ↓           │
 └─────────────────┘           │ Answer + Source │
                               └─────────────────┘
-```
-
----
-
-## 🔄 How It Works
-```
-1. INGEST                2. EMBED                3. RETRIEVE
-─────────────           ─────────────           ─────────────
-PDF or URL    →    Split into chunks  →   Store in ChromaDB
-                   Embed with           Vector similarity
-                   MiniLM-L6-v2         search (top-5)
-
-4. GENERATE              5. RESPOND
-─────────────           ─────────────
-Build prompt   →    LLaMA 3.1 via     →   Answer + Sources
-with context        Groq API               + TTS audio
 ```
 
 ---
@@ -131,22 +133,18 @@ rag-chatbot/
 │   ├── test_retrieval.py
 │   └── test_pipeline.py
 │
-├── 📁 data/
-│   ├── raw/                    ← Uploaded PDFs
-│   └── processed/              ← ChromaDB vector store
-│
-├── .env.example                ← Environment template
+├── .env.example
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 ### Prerequisites
 - Python 3.10+
-- Groq API key (free at [console.groq.com](https://console.groq.com))
+- Free Groq API key from [console.groq.com](https://console.groq.com)
 
 ### Installation
 ```bash
@@ -162,20 +160,9 @@ source venv/Scripts/activate   # Windows
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Set up environment variables
+# 4. Add your Groq API key
 cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
-```
-
-### Environment Variables
-```env
-GROQ_API_KEY=gsk_your_key_here
-EMBEDDING_MODEL=all-MiniLM-L6-v2
-LLM_MODEL=llama-3.1-8b-instant
-CHUNK_SIZE=500
-CHUNK_OVERLAP=50
-TOP_K=5
-CHROMA_DB_PATH=./data/processed/chroma_db
+# Open .env and set GROQ_API_KEY=gsk_your_key
 ```
 
 ### Run
@@ -214,12 +201,12 @@ https://docs.python.org/3/tutorial/
 
 ---
 
-## 🧪 Run Tests
+## Run Tests
 ```bash
 # Test ingestion pipeline
 python -m pytest tests/test_ingestion.py -v -s
 
-# Test vector store + retrieval
+# Test vector store and retrieval
 python -m pytest tests/test_retrieval.py -v -s
 
 # Test full end-to-end pipeline
@@ -237,6 +224,7 @@ python -m pytest tests/test_pipeline.py -v -s
 - [x] Text-to-Speech (TTS)
 - [x] Voice input (STT)
 - [x] Multi-turn chat history
+- [x] Streamlit Cloud deployment
 - [ ] Re-ranking with Cohere
 - [ ] RAGAS evaluation suite
 - [ ] Multi-document support
@@ -245,22 +233,12 @@ python -m pytest tests/test_pipeline.py -v -s
 
 ---
 
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first.
-
----
-
-## 📄 License
-
-MIT License — feel free to use this for your own projects!
-
----
-
 <div align="center">
 
 Built with ❤️ by [Aarti Yadav](https://github.com/aartiyadav7)
 
-⭐ Star this repo if you found it helpful!
+⭐ **Star this repo if you found it helpful!**
+
+[![Live App](https://img.shields.io/badge/Try_It_Live-rag--chatbot--tts.streamlit.app-FF4B4B?style=for-the-badge&logo=streamlit)](https://rag-chatbot-tts.streamlit.app/)
 
 </div>
